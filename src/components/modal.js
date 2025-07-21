@@ -1,4 +1,4 @@
-export const handleEscKeyUp = (evt) => {
+const handleEscKeyUp = (evt) => {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_is-opened');
     popupClose(openedPopup);
@@ -15,4 +15,19 @@ export function popupClose(modalWindow) {
 export function popupOpen(modalWindow) {
   modalWindow.classList.add('popup_is-opened');
   document.addEventListener('keydown', handleEscKeyUp);
+};
+
+//отдельная функция функцияЧтобыПовеситьСлушатели
+export const functionAddEventListener = (popupElement) => {
+  const popupCloseButton = popupElement.querySelector('.popup__close');
+  popupCloseButton.addEventListener('click', () => {
+    popupClose(popupElement); 
+  });
+
+  //закрываем попап по оверлэю
+  popupElement.addEventListener('mousedown', (evt) => {
+    if (evt.target.classList.contains('popup')) {
+      popupClose(popupElement)
+    }
+  });
 };

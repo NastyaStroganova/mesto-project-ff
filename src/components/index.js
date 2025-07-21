@@ -1,11 +1,11 @@
 import { initialCards } from './cards.js';
 import '../pages/index.css';
-import { addCard } from './cards.js';
-import { handleEscKeyUp } from './modal.js';
+import { addCard } from './card.js';
 import { popupOpen } from './modal.js';
 import { popupClose } from './modal.js';
-import { likeCard } from './cards.js';
-import { deleteCard } from './cards.js';
+import { functionAddEventListener } from './modal.js';
+import { likeCard } from './card.js';
+import { deleteCard } from './card.js';
 
 
 const cardsList = document.querySelector('.places__list');
@@ -15,20 +15,19 @@ const profile = content.querySelector('.profile');
 const profileInfo = profile.querySelector('.profile__info');
 const editButton = profileInfo.querySelector('.profile__edit-button');
 const popupEdit = document.querySelector('.popup_type_edit');
-const popup = document.querySelector('.popup');
 const popupNewCard = document.querySelector('.popup_type_new-card');
 const addButton = profile.querySelector('.profile__add-button');
 const imagePopup = document.querySelector('.popup_type_image');
 const popupImageOpened = imagePopup.querySelector('.popup__image');
 const popupImageCaption = imagePopup.querySelector('.popup__caption');
-const formEdit = document.forms['edit-profile'];
-const inputName = formEdit.elements['name'];
-const inputDescription = formEdit.elements['description'];
+const formProfile = document.forms['edit-profile'];
+const inputNameFormProfile = formProfile.elements['name'];
+const inputDescriptionFormProfile = formProfile.elements['description'];
 const profileTitle = profileInfo.querySelector('.profile__title');
 const profileDescription = profileInfo.querySelector('.profile__description');
 const formAddNewCard = document.forms['new-place'];
-const inputPlaceName = formAddNewCard.elements['place-name'];
-const inputLink = formAddNewCard.elements['link'];
+const inputPlaceNameFormAddNewCard = formAddNewCard.elements['place-name'];
+const inputlinkFormAddNewCard = formAddNewCard.elements['link'];
 
 initialCards.forEach((item) => {
   addToContainer(cardsList, addCard(item, deleteCard, likeCard, handleOpenImage));
@@ -45,46 +44,20 @@ function handleOpenImage ({name, link}) {
   popupOpen(imagePopup);
 };
 
-//отдельная функция функцияЧтобыПовеситьСлушатели
-const functionAddEventListener = (popupElement) => {
-  const popupCloseButton = popupElement.querySelector('.popup__close');
-  popupCloseButton.addEventListener('click', () => {
-    popupClose(popupElement); 
-  });
-  
-  //закрываем попап по оверлэю
-  popupElement.addEventListener('mousedown', (evt) => {
-    if (evt.target.classList.contains('popup')) {
-      popupClose(popupElement)
-    }
-  });
-};
-
-//открываем попап редактирования профиля с инпутами из разметки
-editButton.addEventListener('click', () => {
-    // Возьмём данные из разметки и запишем в инпуты 
-    inputName.value = profileTitle.textContent;
-    inputDescription.value = profileDescription.textContent;
-  popupOpen(popupEdit);
-});
-
 //функция редактирования (попап редактирования профиля)
-function handleFormSubmit (evt) {
+function handleFormProfileSubmit (evt) {
   evt.preventDefault();
-  profileTitle.textContent = inputName.value;
-  profileDescription.textContent = inputDescription.value;
+  profileTitle.textContent = inputNameFormProfile.value;
+  profileDescription.textContent = inputDescriptionFormProfile.value;
   popupClose(popupEdit);
 };
-
-//обработчик отправки формы (редактировать профиль)
-formEdit.addEventListener('submit', handleFormSubmit);
 
 function addNewCard (evt) {
   evt.preventDefault();
   const newCardData =
     {
-      name: inputPlaceName.value,
-      link: inputLink.value,
+      name: inputPlaceNameFormAddNewCard.value,
+      link: inputlinkFormAddNewCard.value,
     };
 
   const newCard = addCard(newCardData, deleteCard, likeCard, handleOpenImage);
@@ -93,6 +66,14 @@ function addNewCard (evt) {
   formAddNewCard.reset();
 };
 
+//открываем попап редактирования профиля с инпутами из разметки
+editButton.addEventListener('click', () => {
+  // Возьмём данные из разметки и запишем в инпуты 
+  inputNameFormProfile.value = profileTitle.textContent;
+  inputDescriptionFormProfile.value = profileDescription.textContent;
+popupOpen(popupEdit);
+});
+
 formAddNewCard.addEventListener('submit', addNewCard);
 
 //слушатель, чтобы отркыть попап - создания новой карточки
@@ -100,7 +81,16 @@ addButton.addEventListener('click', () => {
   popupOpen(popupNewCard);
 });
 
+
+//обработчик отправки формы (редактировать профиль)
+formProfile.addEventListener('submit', handleFormProfileSubmit);
+
+
 Array.from(document.querySelectorAll('.popup')).forEach(popup => {
   popup.classList.add('.popup_is-animated');
   functionAddEventListener(popup);
 });
+
+//Наверху файла объявляем переменные
+//Затем функции
+//Внизу файла реализуем добавление обработчиков.
