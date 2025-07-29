@@ -22,16 +22,13 @@ export function addCard(cardData, userId, handleDelete, handleOpenImage, handleL
   if (cardData.owner._id !== userId) {
     deleteButton.remove();
   }
-
    deleteButton.addEventListener('click', () => {
-  handleDelete(cardElement, cardData._id)
+  handleDelete(cardData._id, cardElement)
 });
 
-  // likeButton.addEventListener('click', () => {
-  //   likeCard(cardData._id, likeButton, likesCount);
-  // });
-
-  //onLikeClick(cardID, likeButton, likesCount);
+  likeButton.addEventListener('click', () => {
+    handleLikeIconClick(cardData._id, likeButton, likesCount);
+  }); 
 
   cardImage.addEventListener('click', () => {
     handleOpenImage({
@@ -53,22 +50,10 @@ export const handleLikeIconClick = (toggleLike) => (cardID, likeButton, likesCou
     .catch((err) => console.log(`Ошибка изменения статуса лайка: ${err}`));
 };
 
-// deleteButton.addEventListener('click', () => {
-//   handleDelete(cardElement, cardData._id)
-// });
-//export function likeCard (evt) { удалила случайно
-  
+const updateLikes = (cardD, cardId, likeButton, likesCount) => {
 
-// export function deleteCard (cardElement) {
-//   cardElement.remove();
-// };
+}
 
-
-
-
-
-//Поэтому для загрузки данных пользователя и карточек необходимо воспользоваться
-// методом Promise.all(). В него передается массив промисов, которые должны быть 
-// выполнены, т.е. наши запросы, а в блок .then мы попадем когда оба запроса 
-// будут выполнены. Тем самым это гарантирует, что у нас будет сразу и массив 
-// карточек и _id пользователя для их отображения.
+export function deleteCard (cardElement) {
+  cardElement.remove();
+};

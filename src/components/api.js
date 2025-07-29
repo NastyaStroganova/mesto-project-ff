@@ -65,7 +65,7 @@ export const createNewCard = ({name, link}) => {
 
 export const  toggleLike = (cardId, isLiked) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: isLiked ? 'DELETE' : 'PUT',
+    method: isLiked ? 'PUT' : 'DELETE',
     headers: config.headers,
   })
   .then(checkResponse)
@@ -77,6 +77,9 @@ export const deleteCard = (cardId) => {
     headers: config.headers,
   })
   .then(checkResponse)
+  .then((data) => {
+   return data
+  })
 };
 
 export const updateAvatar = (avatarLink) => {

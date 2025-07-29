@@ -1,21 +1,3 @@
-// очистка ошибок валидации вызовом clearValidation
-
-//clearValidation(profileForm, validationConfig); 
-
-//Вынесите функциональность валидации форм в файл validation.js.
-
-//  вызов функций enableValidation и clearValidation должен 
-// находиться в файле index.js. 
-
-
-// А все другие функции, 
-// включая декларирование функции enableValidation и 
-// валидации форм, — в отдельном файле validation.js.
-//В HTML паттерны, тексты валидаций и т.п.
-
-
-
-
 const showInputError = (formElement, inputElement, errorMessage, validationConfig) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(validationConfig.inputErrorClass);
@@ -88,7 +70,8 @@ export const setEventListener = (formElement, validationConfig) => {
 }; 
 
 export const enableValidation = (validationConfig) => {
-  const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
+  const formList = Array.from(document.querySelectorAll(validationConfig.formSelector))
+  .filter(form => !form.closest('.popup_type_delete-card'));
   formList.forEach((formElement) => {
     setEventListener(formElement, validationConfig);
   });
